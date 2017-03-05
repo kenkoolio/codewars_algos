@@ -1,0 +1,104 @@
+// new codewars file starting March 4, 2017
+
+3/4/17
+  Description:
+
+  You are given an array strarr of strings and an integer k. Your task is to return the first longest string consisting of k consecutive strings taken in the array.
+
+  Example:
+
+  longest_consec(["zone", "abigail", "theta", "form", "libe", "zas", "theta", "abigail"], 2) --> "abigailtheta"
+
+  n being the length of the string array, if n = 0 or k > n or k <= 0 return "".
+
+
+  // my solution
+  function longestConsec(strarr, k) {
+    'use strict';
+
+    let n = strarr.length,
+        strData = {},
+        maxCount = 0,
+        maxStr = "",
+        maxIdx = 0;
+
+    //check inputs
+    if ((Object.prototype.toString.call(strarr) != '[object Array]') || (typeof(k) !== 'number') ||  (n === 0) || (k>n) || (k<=0)){
+      return "";
+    }
+
+    //create data object
+    for (let i = 0; i<n; i++){
+      strData[i] = {};
+      strData[i].string = strarr[i];
+      strData[i].count = strarr[i].length;
+    }
+
+    //find combined length based on k
+    for (let j = 0; j<n; j++){
+      let inputObj = {},
+          p = j+k;
+
+      for (let m=j; m<p; m++){
+        if(typeof(strData[m]) !== 'undefined'){
+          inputObj[m] = strData[m];
+        }
+      }
+
+      strData[j].comboLength = comboFunc( inputObj );
+    }
+
+    //find max string
+    for (let r = 0; r<n; r++){
+      if((strData[r].comboLength > maxCount) && (typeof(strData[r+(k-1)]) !== 'undefined')){
+        maxCount = strData[r].comboLength;
+        maxIdx = r;
+      }
+    }
+
+    //combine max strings into single string
+    for (let s = maxIdx; s<(maxIdx+k); s++){
+      maxStr += strData[s].string;
+    }
+
+    return maxStr;
+
+  }
+
+  function comboFunc(strObj){
+    let comboLength = 0;
+    for (let entry in strObj) {
+      if (strObj.hasOwnProperty(entry) && typeof(strObj[entry]) !== 'undefined'){
+        comboLength += strObj[entry].count;
+      }
+    }
+    return comboLength;
+  }
+
+  console.log(longestConsec(["yes", "Yes", "brownie", "kacie"], 2));
+
+
+  //top solution #1 - jbchen
+
+  function longestConsec(strarr, k) {
+    var longest = "";
+    for(var i=0;k>0 && i<=strarr.length-k;i++){
+      var tempArray = strarr.slice(i,i+k);
+      var tempStr = tempArray.join("");
+      if(tempStr.length > longest.length){
+        longest = tempStr;
+      }
+    }
+    return longest;
+  }
+
+  //top solution #2 - ZozoFouchtra
+
+  function longestConsec(strarr, k) {
+  if( strarr.length==0 || k> strarr.length || k <1 ) return "";
+  let lens = strarr.map( (_,i,arr) => arr.slice(i,i+k).join('').length ),
+      i = lens.indexOf( Math.max(...lens) );
+  return strarr.slice(i,i+k).join('')
+  }
+
+-----
