@@ -1,6 +1,6 @@
 // new codewars file starting March 4, 2017
 
-3/4/17 (Python)
+3/4/17 (JavaScript)
   Description:
 
   You are given an array strarr of strings and an integer k. Your task is to return the first longest string consisting of k consecutive strings taken in the array.
