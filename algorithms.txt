@@ -347,3 +347,41 @@ TOP ANSWER(By multiple people):
           return new string ((s1 +s2).Distinct().OrderBy(x=>x).ToArray ());
     }
   }
+
+
+Dibley1973 implemented his own Distinct():
+
+  using System;
+  using System.Linq;
+  using System.Text;
+  using System.Collections.Generic;
+
+  public class TwoToOne
+  {
+
+  	public static string Longest (string s1, string s2)
+    {
+        Dictionary distinctCharacters = new Dictionary();
+        char[] firstCharacters = s1.ToCharArray();
+        char[] secondCharacters = s2.ToCharArray();
+
+        TwoToOne.AddDistinctCharactersToArray(firstCharacters, distinctCharacters);
+        TwoToOne.AddDistinctCharactersToArray(secondCharacters, distinctCharacters);
+
+        var unsortedCharacters = distinctCharacters.Values;
+        var sortedCharacters = unsortedCharacters.OrderBy(character => character).ToArray();
+
+        return new string( sortedCharacters);
+    }
+
+    public static void AddDistinctCharactersToArray(char[] characters, Dictionary distinctCharacters)
+    {
+       foreach(var character in characters)
+       {
+          var dictionaryContainsCharacter = distinctCharacters.ContainsKey(character);
+          if (dictionaryContainsCharacter) continue;
+
+          distinctCharacters.Add(character, character);
+       }
+    }
+  }
